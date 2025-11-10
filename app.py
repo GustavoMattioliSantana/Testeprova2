@@ -87,7 +87,7 @@ def index():
             session["usuario"] = username
             return redirect(url_for("estudantes"))
         else:
-            flash("Usuário ou senha inválidos.", "danger")
+            flash("Usuario ou senha invalidos.", "danger")
 
     return render_template("index.html")
 
