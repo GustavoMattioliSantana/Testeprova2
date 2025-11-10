@@ -23,7 +23,7 @@ ENV/
 
 # --- BASE DE DADOS LOCAL ---
 # Evita subir o banco local (os dados são temporários e variam de máquina pra máquina)
-cadastro.db
+escola.db
 
 # --- TESTES ---
 .coverage
