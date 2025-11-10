@@ -18,14 +18,17 @@ def client(tmp_path):
         yield client
         # Não precisa dropar, o arquivo some com o tmp_path
 
-
+def test_login_fail(client):
+    resp = login(client, username="x", password="y")
+    assert b"Usuario ou senha invalidos" in resp.data or \
+           b"Usuario ou senha" in resp.data
+    
 def login(client, username="professor", password="1234"):
     return client.post(
         "/",
         data={"username": username, "password": password},
         follow_redirects=True,
     )
-
 
 def test_index_page_loads(client):
     resp = client.get("/")
@@ -38,12 +41,6 @@ def test_login_success(client):
     assert resp.status_code == 200
     # Depois do login, cai em /students
     assert b"Cadastrar Estudante" in resp.data
-
-
-def test_login_fail(client):
-    resp = login(client, username="x", password="y")
-    assert b"Usuario ou senha invalidos" in resp.data or \
-           b"Usuario ou senha" in resp.data
 
 
 def test_create_student_and_grade(client):
