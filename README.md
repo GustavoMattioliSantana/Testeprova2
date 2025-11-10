@@ -86,7 +86,6 @@ backend-devops/
 
 ```bash
 git clone https://github.com/rgcavallari/backend-devops.git
-cd sistema-notas
 ```
 
 ### 2️⃣ Criar e ativar o ambiente virtual
