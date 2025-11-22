@@ -23,7 +23,7 @@ def test_login_fail(client):
     assert b"Usuario ou senha invalidos" in resp.data or \
            b"Usuario ou senha" in resp.data
     
-def login(client, username="professor", password="1234"):
+def login(client, username="admin", password="admin123"):
     return client.post(
         "/",
         data={"username": username, "password": password},
