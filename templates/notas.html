@@ -2,9 +2,10 @@
 {% block title %}Notas - Sistema Escolar{% endblock %}
 
 {% block content %}
-<h2>Lançar Nota</h2>
+{% if session.role == 'professor' %}
+<h2>Lançar Nota para a disciplina de {{ session.disciplina }}</h2>
 <form method="post" class="row g-3 mb-4">
-  <div class="col-md-4">
+  <div class="col-md-6">
     <label class="form-label">Estudante</label>
     <select name="id_estudante" class="form-select" required>
       <option value="">Selecione...</option>
@@ -13,36 +14,43 @@
       {% endfor %}
     </select>
   </div>
-  <div class="col-md-4">
-    <label class="form-label">Disciplina</label>
-    <input type="text" name="disciplina" class="form-control" required>
-  </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label">Nota</label>
     <input type="number" step="0.01" name="nota" class="form-control" required>
   </div>
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary">Salvar Nota</button>
+  <div class="col-md-3 d-flex align-items-end">
+    <button type="submit" class="btn btn-primary w-100">Salvar Nota</button>
   </div>
 </form>
+{% endif %}
 
-<h3>Notas lançadas</h3>
-<table class="table table-bordered">
+<h3>
+    {% if session.role == 'professor' %}
+        Notas da disciplina de {{ session.disciplina }}
+    {% elif session.role == 'aluno' %}
+        Minhas Notas
+    {% else %}
+        Todas as Notas Lançadas
+    {% endif %}
+</h3>
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>#</th>
       <th>Estudante</th>
       <th>Disciplina</th>
       <th>Nota</th>
     </tr>
   </thead>
   <tbody>
-  {% for g in notas %}
+  {% for nota in notas %}
     <tr>
-      <td>{{ g.id }}</td>
-      <td>{{ g.nome }}</td>
-      <td>{{ g.disciplina }}</td>
-      <td>{{ "%.2f"|format(g.nota) }}</td>
+      <td>{{ nota.nome }}</td>
+      <td>{{ nota.disciplina }}</td>
+      <td>{{ "%.2f"|format(nota.nota) }}</td>
+    </tr>
+  {% else %}
+    <tr>
+        <td colspan="3" class="text-center">Nenhuma nota encontrada.</td>
     </tr>
   {% endfor %}
   </tbody>

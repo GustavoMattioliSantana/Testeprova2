@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Painel de Administrador{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Formulário de Criação de Usuário -->
+    <div class="col-md-4">
+        <h2>Criar Novo Usuário</h2>
+        <div class="card card-body">
+            <form action="{{ url_for('admin') }}" method="POST">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome Completo</label>
+                    <input type="text" class="form-control" name="nome" required>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nome de Usuário (Login)</label>
+                    <input type="text" class="form-control" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Função</label>
+                    <select name="role" class="form-select" id="role-select" required>
+                        <option value="" disabled selected>Selecione a função...</option>
+                        <option value="admin">Administrador</option>
+                        <option value="professor">Professor</option>
+                        <option value="aluno">Aluno</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="disciplina-field" style="display: none;">
+                    <label for="disciplina" class="form-label">Disciplina</label>
+                    <input type="text" class="form-control" name="disciplina">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Criar Usuário</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabela de Usuários -->
+    <div class="col-md-8">
+        <h2>Usuários Cadastrados</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Usuário (Login)</th>
+                    <th>Função</th>
+                    <th>Disciplina</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.role }}</td>
+                    <td>{{ usuario.disciplina or '' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById('role-select').addEventListener('change', function () {
+        var disciplinaField = document.getElementById('disciplina-field');
+        if (this.value === 'professor') {
+            disciplinaField.style.display = 'block';
+            disciplinaField.querySelector('input').required = true;
+        } else {
+            disciplinaField.style.display = 'none';
+            disciplinaField.querySelector('input').required = false;
+        }
+    });
+</script>
+{% endblock %}
