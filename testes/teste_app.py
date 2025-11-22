@@ -105,5 +105,3 @@ def test_create_student_and_grade(client):
     )
     text = resp.get_data(as_text=True)
     assert resp.status_code == 200
-   
-
