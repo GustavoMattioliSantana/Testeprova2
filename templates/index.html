@@ -2,6 +2,62 @@
 {% block title %}Login - Sistema Escolar{% endblock %}
 
 {% block content %}
+
+<style>
+        /* Estilos básicos para o modal (popup) usando <dialog> */
+        #imagem-modal {
+            border: none;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background-color: white; /* Garante um fundo branco para o modal */
+
+            /* NOVOS ESTILOS PARA AJUSTE */
+            width: fit-content; /* Ajusta a largura do modal ao conteúdo */
+            height: fit-content; /* Ajusta a altura do modal ao conteúdo */
+            max-width: 90vw;    /* O modal não excederá 90% da largura da viewport */
+            max-height: 90vh;   /* O modal não excederá 90% da altura da viewport */
+            box-sizing: border-box; /* Garante que padding e border sejam incluídos na width/height */
+        }
+        /* Estilo para a imagem dentro do modal */
+        #imagem-modal img {
+            /* NOVOS ESTILOS PARA AJUSTE */
+            max-width: 100%;    /* A imagem não excederá 100% da largura do seu container */
+            max-height: 70vh;   /* A imagem não excederá 70% da altura da viewport */
+            width: auto;        /* Ajusta a largura automaticamente */
+            height: auto;       /* Ajusta a altura automaticamente */
+            display: block;
+            margin: 0 auto 15px auto; /* Centraliza a imagem e adiciona margem inferior */
+            object-fit: contain; /* Garante que a imagem inteira seja visível, escalando-a se necessário */
+        }
+        /* Estilo para o backdrop (fundo escurecido) */
+        #imagem-modal::backdrop {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        /* Estilo para o botão de fechar */
+        #fechar-modal {
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        #fechar-modal:hover {
+            background-color: #e0e0e0;
+        }
+        .modal-images-container {
+    display: flex;
+    justify-content: center; /* Centraliza as imagens horizontalmente */
+    align-items: center; /* Alinha as imagens verticalmente */
+    gap: 15px; /* Espaço entre as imagens */
+    margin-bottom: 15px; /* Espaço abaixo das imagens */
+    flex-wrap: wrap; /* Permite que as imagens quebrem a linha em telas menores */
+}
+    </style>
+
+
 <div class="row justify-content-center">
   <div class="col-md-4">
     <h2 class="mb-3">Login do Professor</h2>
@@ -20,4 +76,64 @@
     </form>
   </div>
 </div>
+
+<dialog id="imagem-modal">
+        <h2>🎉 Faz o L!</h2>
+        <div class="modal-images-container">
+          <img src="static\image\l.png" alt="Imagem comemorativa Faz o L">
+          <img src="static\image\L.jpg" alt="Imagem comemorativa Faz o L">
+        </div>
+        <button id="fechar-modal">Fechar</button>
+    </dialog>
+
+    <script>
+        // Elementos DOM
+        const dialog = document.getElementById('imagem-modal');
+        const fecharBotao = document.getElementById('fechar-modal');
+
+        // Sequência de teclas esperada (em minúsculas)
+        const sequenciaEsperada = "fazol";
+        let sequenciaAtual = ""; // Armazena as teclas pressionadas
+
+        // Função para mostrar o popup
+        function mostrarPopup() {
+            // O método showModal() abre o dialog como um modal
+            dialog.showModal();
+        }
+
+        // Função para fechar o popup
+        function fecharPopup() {
+            dialog.close();
+        }
+
+        // Event listener para detectar teclas pressionadas no documento inteiro
+        document.addEventListener('keydown', (evento) => {
+            // Converte a tecla para minúscula e pega apenas a primeira letra
+            const teclaPressionada = evento.key.toLowerCase().charAt(0);
+
+            // Se a tecla pressionada for a primeira letra da sequência
+            if (teclaPressionada === sequenciaEsperada[sequenciaAtual.length]) {
+                // Adiciona a tecla à sequência atual
+                sequenciaAtual += teclaPressionada;
+
+                // Verifica se a sequência completa foi digitada
+                if (sequenciaAtual === sequenciaEsperada) {
+                    mostrarPopup();
+                    sequenciaAtual = ""; // Reseta a sequência após mostrar
+                }
+            } else {
+                // Se a tecla não for a esperada, reseta a sequência
+                sequenciaAtual = "";
+                // Tenta recomeçar a sequência com a tecla atual
+                if (teclaPressionada === sequenciaEsperada[0]) {
+                     sequenciaAtual = teclaPressionada;
+                }
+            }
+        });
+
+        // Event listener para fechar o modal com o botão
+        fecharBotao.addEventListener('click', fecharPopup);
+
+        // O modal também pode ser fechado com a tecla ESC por padrão do <dialog>
+    </script>
 {% endblock %}
